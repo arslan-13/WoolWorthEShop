@@ -1,0 +1,21 @@
+﻿@model WoolWorthEShop.Entities.Category
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div style="margin-top:100px;">
+    <h2>Edit</h2>
+
+    <form method="post">
+        <input type="hidden" name="ID" value="@Model.ID" />
+        <label>Name</label>
+        <input type="text" name="Name" value="@Model.Name" />
+        <br />
+
+        <label>Description</label>
+        <input type="text" name="Description" value="@Model.Description" />
+        <br />
+
+        <button type="submit">Save</button>
+    </form>
+</div>

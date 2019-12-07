@@ -1,0 +1,12 @@
+﻿@model List<WoolWorthEShop.Entities.Category>
+@{
+    ViewBag.Title = "Index";
+}
+<div style="margin-top:100px;">
+    <h2>Index</h2>
+
+    @foreach (var Category in Model)
+    {
+        <h4>@Category.Name</h4>
+    }
+</div>
