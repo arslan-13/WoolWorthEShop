@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WoolWorthEShop.Entities;
 using WoolWorthEShop.DB;
+using System.Data.Entity;
 
 namespace WoolWorthEShop.Services
 {
@@ -15,14 +16,23 @@ namespace WoolWorthEShop.Services
         {
             using (var context = new WWContext())
             {
-                return context.Products.Find(ID);
+                return context.Products.Where(x=>x.ID==ID).Include(x=>x.category).FirstOrDefault();
             }
         }
+
+        public List<Product> GetProductsByID(List<int> IDs)
+        {
+            using (var context = new WWContext())
+            {
+                return context.Products.Where(x => IDs.Contains(x.ID)).ToList();
+            }
+        }
+
         public List<Product> GetProduct()
         {
             using (var context = new WWContext())
             {
-                return context.Products.ToList();
+                return context.Products.Include(x => x.category).ToList();
 
             }
         }

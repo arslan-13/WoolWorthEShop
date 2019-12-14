@@ -26,6 +26,14 @@ namespace WoolWorthEShop.Services
 
             }
         }
+        public List<Category> GetFeaturedCategory()
+        {
+            using (var context = new WWContext())
+            {
+                return context.Categories.Where(x => x.isFeatured && x.ImageURL != null).ToList();
+
+            }
+        }
 
         public void SaveCategory(Category category)
         {

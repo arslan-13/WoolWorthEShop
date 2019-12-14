@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WoolWorthEShop.Entities;
 using WoolWorthEShop.Services;
+using WoolWorthEShop.Web.ViewModels;
 
 namespace WoolWorthEShop.Web.Controllers
 {
@@ -12,6 +13,7 @@ namespace WoolWorthEShop.Web.Controllers
     {
 
         productService productService = new productService();
+        CategoriesService CategoriesService = new CategoriesService();
 
         // GET: Product
         public ActionResult Index()
@@ -33,13 +35,20 @@ namespace WoolWorthEShop.Web.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            return PartialView();
+            var cate = CategoriesService.GetCategory();
+            return PartialView(cate);
         }
 
         [HttpPost]
-        public ActionResult Create(Product product)
+        public ActionResult Create(NewCategoryViewModel model)
         {
-            productService.SaveProduct(product);
+            var newPorduct = new Product();
+            newPorduct.Name = model.Name;
+            newPorduct.Description = model.Description;
+            newPorduct.Price = model.Price;
+            newPorduct.categoryID = model.CategoryID;
+            //newPorduct.category = CategoriesService.GetCategoryID(model.CategoryID);
+            productService.SaveProduct(newPorduct);
             return RedirectToAction("ProductTable");
         }
 

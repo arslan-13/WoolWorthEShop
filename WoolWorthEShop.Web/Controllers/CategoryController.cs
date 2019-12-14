@@ -16,7 +16,6 @@ namespace WoolWorthEShop.Web.Controllers
         public ActionResult Index()
         {
             var categories = categoryService.GetCategory();
-
             return View(categories);
         }
 

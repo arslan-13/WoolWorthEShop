@@ -1,6 +1,15 @@
-﻿
+﻿@model WoolWorthEShop.Web.ViewModels.HomeViewModel
 @{
     ViewBag.Title = "Index";
+
+    //var firstCate = Model.categories.Where(x => x.ImageURL != null).First();
+
+    var firstCategory = Model.Featuredcategories[0];
+    var secondCategory = Model.Featuredcategories[1];
+    var thirdCategory = Model.Featuredcategories[2];
+    var fouthCategory = Model.Featuredcategories[3];
+    var fivthCategory = Model.Featuredcategories[4];
+    var sixthCategory = Model.Featuredcategories[5];
 }
 
 <!-- SLIDER -->
@@ -158,25 +167,38 @@
                 <div class="flat-image-box style-1 row2 h24 data-effect clearfix">
                     <div class="item data-effect-item">
                         <div class="inner">
-                            <div class="thumb">
-                                <img src="~/Content/images/image-box/imgbox-1-370x370.jpg" alt="Image">
-                                <div class="elm-btn">
-                                    <a href="#" class="themesflat-button bg-white has-padding-43">Chairs</a>
+                            @if (firstCategory != null)
+                            {
+                                <div class="thumb">
+                                    <img src="@firstCategory.ImageURL" alt="Image" style="width:370px;height:370px;">
+                                    <div class="elm-btn">
+                                        <a href="#" class="themesflat-button bg-white has-padding-43">@firstCategory.Name</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
                                 </div>
-                                <div class="overlay-effect bg-color-1"></div>
-                            </div>
+                            }
                         </div>
                     </div>
 
                     <div class="item data-effect-item">
                         <div class="inner">
-                            <div class="thumb">
-                                <img src="~/Content/images/image-box/imgbox-2-370x370.jpg" alt="Image">
-                                <div class="elm-btn">
-                                    <a href="#" class="themesflat-button bg-white has-padding-43">Lighting</a>
+                            @if (secondCategory != null)
+                            {
+                                <div class="thumb">
+                                    <img src="@secondCategory.ImageURL" alt="Image" style="width:370px;height:370px;">
+                                    <div class="elm-btn">
+                                        <a href="#" class="themesflat-button bg-white has-padding-43">@secondCategory.Name</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
                                 </div>
-                                <div class="overlay-effect bg-color-1"></div>
-                            </div>
+                            }
+                            @*<div class="thumb">
+                                    <img src="~/Content/images/image-box/imgbox-2-370x370.jpg" alt="Image">
+                                    <div class="elm-btn">
+                                        <a href="#" class="themesflat-button bg-white has-padding-43">Lighting</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
+                                </div>*@
                         </div>
                     </div>
                 </div>
@@ -186,25 +208,45 @@
                 <div class="flat-image-box style-1 row2 h24 data-effect clearfix">
                     <div class="item data-effect-item">
                         <div class="inner">
-                            <div class="thumb">
-                                <img src="~/Content/images/image-box/imgbox-3-370x370.jpg" alt="Image">
-                                <div class="elm-btn">
-                                    <a href="#" class="themesflat-button bg-white has-padding-43 ">Watch</a>
+                            @if (thirdCategory != null)
+                            {
+                                <div class="thumb">
+                                    <img src="@thirdCategory.ImageURL" alt="Image" style="width:370px;height:370px;">
+                                    <div class="elm-btn">
+                                        <a href="#" class="themesflat-button bg-white has-padding-43">@thirdCategory.Name</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
                                 </div>
-                                <div class="overlay-effect bg-color-1"></div>
-                            </div>
+                            }
+                            @*<div class="thumb">
+                                    <img src="~/Content/images/image-box/imgbox-3-370x370.jpg" alt="Image">
+                                    <div class="elm-btn">
+                                        <a href="#" class="themesflat-button bg-white has-padding-43 ">Watch</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
+                                </div>*@
                         </div>
                     </div>
 
                     <div class="item data-effect-item">
                         <div class="inner">
-                            <div class="thumb">
-                                <img src="~/Content/images/image-box/imgbox-4-370x370.jpg" alt="Image">
-                                <div class="elm-btn">
-                                    <a href="#" class="themesflat-button bg-white has-padding-43">accessories</a>
+                            @if (fouthCategory != null)
+                            {
+                                <div class="thumb">
+                                    <img src="@fouthCategory.ImageURL" alt="Image" style="width:370px;height:370px;">
+                                    <div class="elm-btn">
+                                        <a href="#" class="themesflat-button bg-white has-padding-43">@fouthCategory.Name</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
                                 </div>
-                                <div class="overlay-effect bg-color-1"></div>
-                            </div>
+                            }
+                            @*<div class="thumb">
+                                    <img src="~/Content/images/image-box/imgbox-4-370x370.jpg" alt="Image">
+                                    <div class="elm-btn">
+                                        <a href="#" class="themesflat-button bg-white has-padding-43">accessories</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
+                                </div>*@
                         </div>
                     </div>
                 </div>
@@ -215,25 +257,45 @@
                 <div class="flat-image-box style-1 row2 h24 data-effect clearfix">
                     <div class="item data-effect-item">
                         <div class="inner">
-                            <div class="thumb">
-                                <img src="~/Content/images/image-box/imgbox-5-370x370.jpg" alt="Image">
-                                <div class="elm-btn">
-                                    <a href="#" class="themesflat-button bg-white has-padding-43">Pen</a>
+                            @if (fivthCategory != null)
+                            {
+                                <div class="thumb">
+                                    <img src="@fivthCategory.ImageURL" alt="Image" style="width:370px;height:370px;">
+                                    <div class="elm-btn">
+                                        <a href="#" class="themesflat-button bg-white has-padding-43">@fivthCategory.Name</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
                                 </div>
-                                <div class="overlay-effect bg-color-1"></div>
-                            </div>
+                            }
+                            @*<div class="thumb">
+                                    <img src="~/Content/images/image-box/imgbox-5-370x370.jpg" alt="Image">
+                                    <div class="elm-btn">
+                                        <a href="#" class="themesflat-button bg-white has-padding-43">Pen</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
+                                </div>*@
                         </div>
                     </div>
 
                     <div class="item data-effect-item">
                         <div class="inner">
-                            <div class="thumb">
-                                <img src="~/Content/images/image-box/imgbox-6-370x370.jpg" alt="Image">
-                                <div class="elm-btn">
-                                    <a href="#" class="themesflat-button bg-white has-padding-43">Table</a>
+                            @if (sixthCategory != null)
+                            {
+                                <div class="thumb">
+                                    <img src="@sixthCategory.ImageURL" alt="Image" style="width:370px;height:370px;">
+                                    <div class="elm-btn">
+                                        <a href="#" class="themesflat-button bg-white has-padding-43">@sixthCategory.Name</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
                                 </div>
-                                <div class="overlay-effect bg-color-1"></div>
-                            </div>
+                            }
+                            @*<div class="thumb">
+                                    <img src="~/Content/images/image-box/imgbox-6-370x370.jpg" alt="Image">
+                                    <div class="elm-btn">
+                                        <a href="#" class="themesflat-button bg-white has-padding-43">Table</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
+                                </div>*@
                         </div>
                     </div>
                 </div>

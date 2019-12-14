@@ -8,8 +8,8 @@ namespace WoolWorthEShop.Entities
 {
     public class Product : BaseEntities
     {
-
-        public Category category { get; set; }
+        public int categoryID { get; set; }
+        public virtual Category category { get; set; }
 
         public decimal Price { get; set; }
 

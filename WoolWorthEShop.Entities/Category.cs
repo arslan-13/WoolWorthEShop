@@ -10,6 +10,8 @@ namespace WoolWorthEShop.Entities
     public class Category : BaseEntities
     {
         public List<Product> Products { get; set; }
+        public string ImageURL { get; set; }
 
+        public bool isFeatured { get; set; }
     }
 }

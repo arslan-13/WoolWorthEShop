@@ -7,15 +7,17 @@
 
     <div>
         <form method="post">
-            <input type="text" name="Search" value="" id="TxtSearch" />
-
-            <button type="button" id="btnSearch">Search</button>
+            <div class="form-group">
+                <label>Search Product</label>
+                <input class="form-control" type="text" name="Search" value="" id="TxtSearch" />
+                <button type="button" id="btnSearch">Search</button>
+            </div>
         </form>
-        <button type="button" id="btnNew">New</button>
+        <button type="button" id="btnNew" class="my-3">New</button>
     </div>
 
     <div>
-        <table>
+        <table class=" table-hover">
             <thead>
                 <tr>
                     <td>Product Name</td>
@@ -29,11 +31,21 @@
                 {
                     <tr>
                         <td>@product.Name</td>
-                        <td>-</td>
+                        <td>
+                            @if (product.category != null)
+                            {
+                                <text>@product.category.Name</text>
+                            }
+                            else
+                            {
+                                <text>-</text>
+                            }
+                        </td>
                         <td>@product.Price</td>
                         <td>
                             <button class="btnEdit" data-id="@product.ID">Edit</button>
                             <button class="btnDelete" data-id="@product.ID">Delete</button>
+                            <button class="btnAddtoCart" data-id="@product.ID">Add to Cart</button>
                         </td>
                     </tr>
 
@@ -68,6 +80,7 @@
         })
             .done(function (response) {
                 $("#actionContainer").html(response);
+                FocusAction();
 
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
@@ -113,4 +126,24 @@
         }
 
     });
+
+    var products = [];
+
+    $(".btnAddtoCart").click(function () {
+
+        var CartProductID = $(this).attr("data-id");
+
+        products.push(CartProductID);
+
+        $.cookie("CartProduct", products.join("-"), { path: '/' });
+
+        alert("Product added to Cart");
+    });
+
+    function FocusAction() {
+        $("html,body").animate({
+            scrollTop: $("#actionContainer").offset().top - 100
+        }, 1000);
+
+    }
 </script>

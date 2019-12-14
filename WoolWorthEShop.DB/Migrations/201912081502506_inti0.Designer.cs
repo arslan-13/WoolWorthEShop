@@ -7,13 +7,13 @@ namespace WoolWorthEShop.DB.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class initilaized : IMigrationMetadata
+    public sealed partial class inti0 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(initilaized));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(inti0));
         
         string IMigrationMetadata.Id
         {
-            get { return "201910091654153_initilaized"; }
+            get { return "201912081502506_inti0"; }
         }
         
         string IMigrationMetadata.Source

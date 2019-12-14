@@ -2,27 +2,40 @@
 @{
     ViewBag.Title = "Create";
 }
-<div style="margin-top:100px;">
+<div style="margin-top:100px;" class="container">
     <h2>Create Category</h2>
 
     <form method="post">
         <label>Name</label>
-        <input type="text" name="Name" />
+        <input type="text" name="Name" class="form-control" />
         <br />
 
         <label>Description</label>
-        <input type="text" name="Description" />
+        <input type="text" name="Description" class="form-control" />
         <br />
 
         <label>Image</label>
-        <input type="file" name="Image" accept=".png, .jpg, .jpeg" id="imageUpload" />
+        <input id="ImageURL" name="ImageURL" type="hidden" />
+        <input type="file" name="Image" accept=".png, .jpg, .jpeg" id="imageUpload" class="form-control" />
         <br />
-
+        <label>Is Featured?</label>
+        <input type="checkbox" name="isFeatured" style="display:inline;" id="featured" />
+        <br />
+        @*background-image: url('../../Content/images/noimage.jpg');background-size:contain;background-repeat:no-repeat*@
+        <div class="thumb" style="width: 300px;height: 300px;">
+            <img id="CategoryImage" src="~/Content/images/noimage.jpg" />
+        </div>
         <button type="submit">Save</button>
     </form>
 </div>
 
 <script>
+
+    $('#featured').on('change', function () {
+        $(this).val(this.checked ? "TRUE" : "FALSE");
+    });
+
+
     $("#imageUpload").change(function () {
 
         var element = this;
@@ -33,5 +46,20 @@
             formdata.append("photo", file);
         }
 
+        $.ajax({
+            type: "POST",
+            url: "/Shared/UploadImage",
+            datatype: 'json',
+            data: formdata,
+            contentType: false,
+            processData: false
+        }).done(function (response) {
+            if (response.Success) {
+                $("#ImageURL").val(response.ImageURL);
+                $("#CategoryImage").attr("src", response.ImageURL);
+            }
+        }).fail(function (XMLHttpResuest, textStatus, errorThrown) {
+            alert("fail");
+        });
     });
 </script>

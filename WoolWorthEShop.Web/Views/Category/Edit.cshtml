@@ -1,6 +1,15 @@
 ﻿@model WoolWorthEShop.Entities.Category
 @{
     ViewBag.Title = "Edit";
+
+    var trueChecked = "";
+
+    if (Model.isFeatured)
+    {
+        trueChecked = "checked";
+    }
+
+    var imageURL = !string.IsNullOrEmpty(Model.ImageURL) ? Model.ImageURL : "/Content/images/noimage.jpg";
 }
 
 <div style="margin-top:100px;">
@@ -16,6 +25,20 @@
         <input type="text" name="Description" value="@Model.Description" />
         <br />
 
+        <label>Is Featured?</label>
+        <input type="checkbox" name="isFeatured" style="display:inline;" id="featured" @trueChecked />
+        <br />
+        <div class="thumb" style="width: 300px;height: 300px;">
+            <img id="CategoryImage" src=@imageURL class="img-thumbnail" />
+        </div>
         <button type="submit">Save</button>
     </form>
 </div>
+
+<script>
+    $('#featured').on('change', function () {
+        $(this).val(this.checked ? "TRUE" : "FALSE");
+    });
+</script>
+
+

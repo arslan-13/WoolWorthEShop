@@ -1,0 +1,34 @@
+﻿@model WoolWorthEShop.Web.ViewModels.CartViewModel
+@{
+    ViewBag.Title = "Checkout";
+}
+
+@{
+    if (Model != null)
+    {
+        if (Model.Cartproducts != null && Model.Cartproducts.Count > 0)
+        {
+            <div>
+                @foreach (var product in Model.Cartproducts)
+                {
+                    var productQuantity = Model.CartProductIDs.Where(x => x == product.ID).Count();
+                    <div>
+                        Name:  @product.Name - Price: @product.Price - Quantity: @productQuantity - Total Price: @(product.Price * productQuantity)
+                    </div>
+                }
+            </div>
+
+            <div>
+                Total Bill : @Model.Cartproducts.Sum(x => x.Price * Model.CartProductIDs.Where(z => z == x.ID).Count());
+            </div>
+
+        }
+        else
+        {
+            <div>
+                No Product in Cart.
+            </div>
+        }
+    }
+}
+
