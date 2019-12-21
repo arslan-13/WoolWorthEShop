@@ -176,8 +176,13 @@
                                     </div>
                                 </div>
                             </form>
+                            @{
+                                //ConfigurationService configurationService = new ConfigurationService();
+
+                                var facebook = ConfigurationService.Instance.GetConfig("FacebookURL"); ;
+                            }
                             <ul class="flat-social">
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="@facebook.Value"><i class="fa fa-facebook"></i></a></li>
                                 <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                                 <li><a href="#"><i class="fa fa-google"></i></a></li>
                                 <li><a href="#"><i class="fa fa-behance"></i></a></li>
@@ -196,7 +201,7 @@
                         <div class="widget widget-link">
                             <ul>
                                 <li><a href="#">About Us</a></li>
-                                <li><a href="#">Online Store</a></li>
+                                <li><a href="#">On-line Store</a></li>
                                 <li><a href="blog-list.html">Blog</a></li>
                                 <li><a href="contact.html">Contact Us</a></li>
                             </ul>

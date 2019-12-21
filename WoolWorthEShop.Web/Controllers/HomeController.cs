@@ -10,13 +10,13 @@ namespace WoolWorthEShop.Web.Controllers
 {
     public class HomeController : Controller
     {
-        CategoriesService categoriesService = new CategoriesService();
+        //CategoriesService categoriesService = new CategoriesService();
 
         // GET: Home
         public ActionResult Index()
         {
             HomeViewModel hvm = new HomeViewModel();
-            hvm.Featuredcategories = categoriesService.GetFeaturedCategory();
+            hvm.Featuredcategories = CategoriesService.Instance.GetFeaturedCategory();
 
             return View(hvm);
         }

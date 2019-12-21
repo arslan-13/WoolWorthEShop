@@ -11,7 +11,7 @@ namespace WoolWorthEShop.Web.Controllers
     public class ShopController : Controller
     {
 
-        productService productService = new productService();
+        // productService productService = new productService();
 
         // GET: Shop
         public ActionResult Checkout()
@@ -22,7 +22,7 @@ namespace WoolWorthEShop.Web.Controllers
             if (CartProductsCookies != null)
             {
                 cartViewModel.CartProductIDs = CartProductsCookies.Value.Split('-').Select(x => int.Parse(x)).ToList();
-                cartViewModel.Cartproducts = productService.GetProductsByID(cartViewModel.CartProductIDs);
+                cartViewModel.Cartproducts = productService.Instance.GetProductsByID(cartViewModel.CartProductIDs);
             }
             return View(cartViewModel);
         }

@@ -11,12 +11,31 @@ namespace WoolWorthEShop.Services
 {
     public class productService
     {
+        #region Constructor
+        public static productService Instance
+        {
+            get
+            {
+                if (PrivateInstance == null)
+                {
+                    PrivateInstance = new productService();
+                }
+                return PrivateInstance;
+
+            }
+        }
+        private static productService PrivateInstance { get; set; }
+        public productService()
+        {
+        }
+
+        #endregion
 
         public Product GetProductID(int ID)
         {
             using (var context = new WWContext())
             {
-                return context.Products.Where(x=>x.ID==ID).Include(x=>x.category).FirstOrDefault();
+                return context.Products.Where(x => x.ID == ID).Include(x => x.category).FirstOrDefault();
             }
         }
 
@@ -28,11 +47,14 @@ namespace WoolWorthEShop.Services
             }
         }
 
-        public List<Product> GetProduct()
+        public List<Product> GetProduct(int pageno)
         {
+            int pageSize = 5;
+
             using (var context = new WWContext())
             {
-                return context.Products.Include(x => x.category).ToList();
+                return context.Products.OrderBy(x => x.ID).Skip((pageno - 1) * pageSize).Take(pageSize).Include(x => x.category).ToList();
+                // return context.Products.Include(x => x.category).ToList();
 
             }
         }

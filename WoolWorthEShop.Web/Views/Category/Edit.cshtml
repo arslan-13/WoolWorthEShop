@@ -15,7 +15,7 @@
 <div style="margin-top:100px;">
     <h2>Edit</h2>
 
-    <form method="post">
+    <form method="post" id="EditCategory">
         <input type="hidden" name="ID" value="@Model.ID" />
         <label>Name</label>
         <input type="text" name="Name" value="@Model.Name" />
@@ -31,13 +31,63 @@
         <div class="thumb" style="width: 300px;height: 300px;">
             <img id="CategoryImage" src=@imageURL class="img-thumbnail" />
         </div>
-        <button type="submit">Save</button>
+        <button type="submit" id="tbnUpdate">Update</button>
+        <button type="submit" id="btnCancel">Cancel</button>
     </form>
 </div>
 
 <script>
+     $("#btnCancel").click(function () {
+        $("#actionContainer").html("");
+         FocusAction("tableContainer");
+     });
+
+    $("#tbnUpdate").click(function () {
+
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("Edit","Category")'/*"/Product/Edit"*/,
+            data: $("#EditCategory").serialize()
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+                $("#actionContainer").html("");
+                FocusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('fail');
+            });
+    });
+
     $('#featured').on('change', function () {
         $(this).val(this.checked ? "TRUE" : "FALSE");
+    });
+
+    $("#imageUpload").change(function () {
+
+        var element = this;
+        var formdata = new FormData();
+        var totalFiles = element.files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formdata.append("photo", file);
+        }
+
+        $.ajax({
+            type: "POST",
+            url:'@Url.Action("UploadImage","Shared")' /*"/Shared/UploadImage"*/,
+            datatype: 'json',
+            data: formdata,
+            contentType: false,
+            processData: false
+        }).done(function (response) {
+            if (response.Success) {
+                $("#ImageURL").val(response.ImageURL);
+                $("#CategoryImage").attr("src", response.ImageURL);
+            }
+        }).fail(function (XMLHttpResuest, textStatus, errorThrown) {
+            alert("fail");
+        });
     });
 </script>
 

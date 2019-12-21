@@ -1,14 +1,14 @@
-﻿@model List<Category>
+﻿@model WoolWorthEShop.Web.ViewModels.ProductNewViewModel
 @{
     ViewBag.Title = "Create";
 }
 <div>
     <h2>Create Product</h2>
 
-    <form id="createProduct">
+    <form id="]" method="post">
         <div class="form-group">
             <select name="CategoryID" class="form-control">
-                @foreach (var item in Model)
+                @foreach (var item in Model.AvailableCategories)
                 {
                     <option value="@item.ID">@item.Name</option>
                 }
@@ -20,31 +20,70 @@
             <label>Description</label>
             <input type="text" name="Description" class="form-control" />
             <br />
-
             <label>Price</label>
             <input type="text" name="Price" class="form-control" />
             <br />
-
-            <button type="button" id="btnSave">Save</button>
+            <label>Image</label>
+            <input id="ImageURL" name="ImageURL" type="hidden" />
+            <input type="file" name="Image" accept=".png, .jpg, .jpeg" id="imageUpload" class="form-control" />
+            <br />
+            <div class="thumb" style="width: 300px;height: 300px;">
+                <img id="ProductImage" src="~/Content/images/noimage.jpg" />
+            </div>
+            <button type="submit" id="btnSave">Save</button>
+            <button type="submit" id="btnCancel">Cancel</button>
         </div>
     </form>
 </div>
 
 <script>
+     $("#btnCancel").click(function () {
+        $("#actionContainer").html("");
+         FocusAction("tableContainer");
+     });
+
     $("#btnSave").click(function () {
 
         $.ajax({
             type: "post",
-            url: "/Product/Create",
+            url: '@Url.Action("Create","Product")'/*"/Product/Create"*/,
             data: $("#createProduct").serialize()
         })
             .done(function (response) {
                 $("#tableContainer").html(response);
                 $("#actionContainer").html("");
+                FocusAction("tableContainer");
 
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert('fail');
             });
+    });
+
+     $("#imageUpload").change(function () {
+
+        var element = this;
+        var formdata = new FormData();
+        var totalFiles = element.files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formdata.append("photo", file);
+        }
+
+        $.ajax({
+            type: "POST",
+            url:'@Url.Action("UploadImage","Shared")' /*"/Shared/UploadImage"*/,
+            datatype: 'json',
+            data: formdata,
+            contentType: false,
+            processData: false
+        }).done(function (response) {
+            if (response.Success) {
+                $("#ImageURL").val(response.ImageURL);
+                $("#ProductImage").attr("src", response.ImageURL);
+            }
+        }).fail(function (XMLHttpResuest, textStatus, errorThrown) {
+            alert("fail");
+        });
     });
 </script>

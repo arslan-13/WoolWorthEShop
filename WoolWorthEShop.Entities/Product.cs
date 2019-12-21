@@ -10,7 +10,7 @@ namespace WoolWorthEShop.Entities
     {
         public int categoryID { get; set; }
         public virtual Category category { get; set; }
-
+        public string ImageURL { get; set; }
         public decimal Price { get; set; }
 
     }

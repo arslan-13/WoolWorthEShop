@@ -2,11 +2,33 @@
 @{
     ViewBag.Title = "Index";
 }
-<div style="margin-top:100px;">
-    <h2>Index</h2>
+@*<div style="margin-top:100px;">
+        <h2>Index</h2>
 
-    @foreach (var Category in Model)
-    {
-        <h4>@Category.Name</h4>
-    }
+        @foreach (var Category in Model)
+        {
+            <h4>@Category.Name</h4>
+        }
+    </div>*@
+
+<div class="container">
+    <div id="tableContainer" style="margin-top:100px;">
+        @{
+            Html.RenderAction("CategoryTable");
+
+        }
+    </div>
+    <hr />
+    <div id="actionContainer">
+
+    </div>
 </div>
+
+<script>
+    function FocusAction(controlToFocus) {
+        $("html,body").animate({
+            scrollTop: $("#" + controlToFocus).offset().top - 100
+        }, 1000);
+
+    }
+</script>

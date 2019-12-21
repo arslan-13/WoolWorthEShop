@@ -1,7 +1,12 @@
-﻿@model List<Product>
+﻿@model WoolWorthEShop.Web.ViewModels.ProductSearchViewModel
 @{
     ViewBag.Title = "ProductTable";
 }
+@*<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">*@
+
+@*<script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>*@
+
+
 <div style="margin-top:100px;">
     <h2>ProductTable</h2>
 
@@ -13,11 +18,12 @@
                 <button type="button" id="btnSearch">Search</button>
             </div>
         </form>
+        <button type="button" id="btnReset" class="my-3">Reset</button>
         <button type="button" id="btnNew" class="my-3">New</button>
     </div>
 
     <div>
-        <table class=" table-hover">
+        <table id="ProductsTable" class="table table-striped table-hover">
             <thead>
                 <tr>
                     <td>Product Name</td>
@@ -27,7 +33,8 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var product in Model)
+
+                @foreach (var product in Model.products)
                 {
                     <tr>
                         <td>@product.Name</td>
@@ -50,17 +57,68 @@
                     </tr>
 
                 }
+
+
             </tbody>
         </table>
+        <div>
+            @if (Model.PageNo != 1)
+            {
+                <button class="PageBtn" data-pageno="@(Model.PageNo-1)">Previous</button>
+
+            }
+            <button class="PageBtn" data-pageno="@(Model.PageNo+1)">Next</button>
+        </div>
     </div>
 </div>
 <script>
+    $(document).ready(function () {
+        $('#ProductsTable').DataTable();
+    });
+
+    $(".PageBtn").click(function () {
+
+        $.ajax({
+            url: '@Url.Action("ProductTable","Product")'/*"/Product/ProductTable"*/,
+            data: {
+                PageNo: $(this).attr("data-pageno")
+            }
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('fail');
+            });
+    });
+
+
+
     $("#btnSearch").click(function () {
         var SearchValue = $("#TxtSearch").val();
 
         $.ajax({
 
-            url: "/Product/ProductTable",
+            url:'@Url.Action("ProductTable","Product")' /*"/Product/ProductTable"*/,
+            data: {
+                Search: SearchValue
+            }
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('fail');
+            });
+    });
+
+    $("#btnReset").click(function () {
+        var SearchValue = "";
+
+        $.ajax({
+
+            url: '@Url.Action("ProductTable","Product")'/*"/Product/ProductTable"*/,
             data: {
                 Search: SearchValue
             }
@@ -76,11 +134,11 @@
     $("#btnNew").click(function () {
 
         $.ajax({
-            url: "/Product/Create",
+            url:'@Url.Action("Create","Product")' /*"/Product/Create"*/,
         })
             .done(function (response) {
                 $("#actionContainer").html(response);
-                FocusAction();
+                FocusAction("actionContainer");
 
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
@@ -92,7 +150,7 @@
 
         $.ajax({
 
-            url: "/Product/Edit",
+            url:'@Url.Action("Edit","Product")' /*"/Product/Edit"*/,
             data: {
                 ID: $(this).attr("data-id")
             }
@@ -100,6 +158,7 @@
         })
             .done(function (response) {
                 $("#actionContainer").html(response);
+                 FocusAction("actionContainer");
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert('fail');
@@ -111,7 +170,7 @@
         if (confirmDelete) {
             $.ajax({
                 type: "post",
-                url: "/Product/Delete",
+                url: '@Url.Action("Delete","Product")'/*"/Product/Delete"*/,
                 data: {
                     ID: $(this).attr("data-id")
                 }

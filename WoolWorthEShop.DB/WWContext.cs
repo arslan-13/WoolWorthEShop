@@ -17,6 +17,7 @@ namespace WoolWorthEShop.DB
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Config> configs { get; set; }
     }
 
 

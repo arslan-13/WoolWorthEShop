@@ -5,7 +5,7 @@
 <div style="margin-top:100px;" class="container">
     <h2>Create Category</h2>
 
-    <form method="post">
+    <form method="post" id="createCategory">
         <label>Name</label>
         <input type="text" name="Name" class="form-control" />
         <br />
@@ -25,11 +25,34 @@
         <div class="thumb" style="width: 300px;height: 300px;">
             <img id="CategoryImage" src="~/Content/images/noimage.jpg" />
         </div>
-        <button type="submit">Save</button>
+        <button type="submit" id="btnSave">Save</button>
+        <button type="submit" id="btnCancel">Cancel</button>
     </form>
 </div>
 
 <script>
+     $("#btnSave").click(function () {
+
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("Create","Product")'/*"/Product/Create"*/,
+            data: $("#createCategory").serialize()
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+                $("#actionContainer").html("");
+                FocusAction("tableContainer");
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('fail');
+            });
+     });
+
+    $("#btnCancel").click(function () {
+        $("#actionContainer").html("");
+         FocusAction("tableContainer");
+     });
 
     $('#featured').on('change', function () {
         $(this).val(this.checked ? "TRUE" : "FALSE");
@@ -48,7 +71,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/Shared/UploadImage",
+            url:'@Url.Action("UploadImage","Shared")' /*"/Shared/UploadImage"*/,
             datatype: 'json',
             data: formdata,
             contentType: false,

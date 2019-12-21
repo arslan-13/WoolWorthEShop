@@ -1,6 +1,7 @@
-﻿@model Product
+﻿@model WoolWorthEShop.Web.ViewModels.ProductEditViewModel
 @{
     ViewBag.Title = "Edit";
+    var imageURL = !string.IsNullOrEmpty(Model.ImageURL) ? Model.ImageURL : "/Content/images/noimage.jpg";
 }
 
 <div style="margin-top:100px;">
@@ -10,7 +11,13 @@
 
 
         <input type="hidden" name="ID" value="@Model.ID" />
-
+        <select name="CategoryID" class="form-control">
+            @foreach (var item in Model.AvailableCategories)
+            {
+                var selected = item.ID == Model.CategoryID ? "Selected" : string.Empty;
+                <option value="@item.ID" @selected>@item.Name</option>
+            }
+        </select>
 
         <label>Name</label>
         <input type="text" name="Name" value="@Model.Name" />
@@ -23,25 +30,70 @@
         <label>Price</label>
         <input type="text" name="Price" value="@Model.Price" />
         <br />
+        <label>Image</label>
+        <input id="ImageURL" name="ImageURL" type="hidden" />
+        <input type="file" name="Image" accept=".png, .jpg, .jpeg" id="imageUpload" class="form-control" />
+        <br />
+        @*<label>Is Featured?</label>
+            <input type="checkbox" name="isFeatured" style="display:inline;" id="featured" />
+            <br />*@
+        @*background-image: url('../../Content/images/noimage.jpg');background-size:contain;background-repeat:no-repeat*@
+        <div class="thumb" style="width: 300px;height: 300px;">
+            <img id="CategoryImage" src=@imageURL class="img-thumbnail" />
+        </div>
 
         <button type="button" id="tbnUpdate">Update</button>
+        <button type="submit" id="btnCancel">Cancel</button>
     </form>
 </div>
 
 <script>
+     $("#btnCancel").click(function () {
+        $("#actionContainer").html("");
+         FocusAction("tableContainer");
+     });
+
     $("#tbnUpdate").click(function () {
 
         $.ajax({
             type: "post",
-            url: "/Product/Edit",
+            url: '@Url.Action("Edit","Product")'/*"/Product/Edit"*/,
             data: $("#editProduct").serialize()
         })
             .done(function (response) {
                 $("#tableContainer").html(response);
                 $("#actionContainer").html("");
+                 FocusAction("tableContainer");
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert('fail');
             });
+    });
+
+        $("#imageUpload").change(function () {
+
+        var element = this;
+        var formdata = new FormData();
+        var totalFiles = element.files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formdata.append("photo", file);
+        }
+
+        $.ajax({
+            type: "POST",
+            url:'@Url.Action("UploadImage","Shared")' /*"/Shared/UploadImage"*/,
+            datatype: 'json',
+            data: formdata,
+            contentType: false,
+            processData: false
+        }).done(function (response) {
+            if (response.Success) {
+                $("#ImageURL").val(response.ImageURL);
+                $("#CategoryImage").attr("src", response.ImageURL);
+            }
+        }).fail(function (XMLHttpResuest, textStatus, errorThrown) {
+            alert("fail");
+        });
     });
 </script>

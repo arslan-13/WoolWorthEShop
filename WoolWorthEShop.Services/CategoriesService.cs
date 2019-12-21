@@ -11,6 +11,28 @@ namespace WoolWorthEShop.Services
 {
     public class CategoriesService : DbContext
     {
+        #region Constructor
+        public static CategoriesService Instance
+        {
+            get
+            {
+                if (PrivateInstance == null)
+                {
+                    PrivateInstance = new CategoriesService();
+                }
+                return PrivateInstance;
+
+            }
+        }
+        private static CategoriesService PrivateInstance { get; set; }
+        public CategoriesService()
+        {
+        }
+
+        #endregion
+
+
+
         public Category GetCategoryID(int ID)
         {
             using (var context = new WWContext())
@@ -22,7 +44,7 @@ namespace WoolWorthEShop.Services
         {
             using (var context = new WWContext())
             {
-                return context.Categories.ToList();
+                return context.Categories.Include(x => x.Products).ToList();
 
             }
         }

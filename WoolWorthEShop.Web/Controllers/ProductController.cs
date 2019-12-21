@@ -12,8 +12,8 @@ namespace WoolWorthEShop.Web.Controllers
     public class ProductController : Controller
     {
 
-        productService productService = new productService();
-        CategoriesService CategoriesService = new CategoriesService();
+        // productService productService = new productService();
+        // CategoriesService CategoriesService = new CategoriesService();
 
         // GET: Product
         public ActionResult Index()
@@ -21,34 +21,38 @@ namespace WoolWorthEShop.Web.Controllers
             return View();
         }
 
-        public ActionResult ProductTable(string Search)
+        public ActionResult ProductTable(string Search, int? PageNo)
         {
-            var product = productService.GetProduct();
+            ProductSearchViewModel model = new ProductSearchViewModel();
+            model.PageNo = PageNo.HasValue ? PageNo.Value > 0 ? PageNo.Value : 1 : 1;
+            model.products = productService.Instance.GetProduct(model.PageNo);
             if (string.IsNullOrEmpty(Search) == false)
             {
-                product = product.Where(p => p.Name != null && p.Name.ToLower().Contains(Search.ToLower())).ToList();
+                model.SearchTerm = Search;
+                model.products = model.products.Where(p => p.Name != null && p.Name.ToLower().Contains(Search.ToLower())).ToList();
             }
-
-            return PartialView(product);
+            return PartialView(model);
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            var cate = CategoriesService.GetCategory();
-            return PartialView(cate);
+            ProductNewViewModel model = new ProductNewViewModel();
+            model.AvailableCategories = CategoriesService.Instance.GetCategory();
+
+            return PartialView(model);
         }
 
         [HttpPost]
-        public ActionResult Create(NewCategoryViewModel model)
+        public ActionResult Create(ProductNewViewModel model)
         {
             var newPorduct = new Product();
             newPorduct.Name = model.Name;
             newPorduct.Description = model.Description;
             newPorduct.Price = model.Price;
             newPorduct.categoryID = model.CategoryID;
-            //newPorduct.category = CategoriesService.GetCategoryID(model.CategoryID);
-            productService.SaveProduct(newPorduct);
+            newPorduct.ImageURL = model.ImageURL;
+            productService.Instance.SaveProduct(newPorduct);
             return RedirectToAction("ProductTable");
         }
 
@@ -56,21 +60,37 @@ namespace WoolWorthEShop.Web.Controllers
         [HttpGet]
         public ActionResult Edit(int ID)
         {
-            var product = productService.GetProductID(ID);
-            return PartialView(product);
+            ProductEditViewModel model = new ProductEditViewModel();
+            var product = productService.Instance.GetProductID(ID);
+            model.ID = product.ID;
+            model.Name = product.Name;
+            model.Description = product.Description;
+            model.Price = product.Price;
+            model.CategoryID = product.category != null ? product.category.ID : 0;
+            model.ImageURL = product.ImageURL;
+
+            model.AvailableCategories = CategoriesService.Instance.GetCategory();
+            return PartialView(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(Product product)
+        public ActionResult Edit(ProductEditViewModel model)
         {
-            productService.UpdateProduct(product);
+            var updateProduct = productService.Instance.GetProductID(model.ID);
+            updateProduct.Name = model.Name;
+            updateProduct.Description = model.Description;
+            updateProduct.Price = model.Price;
+            updateProduct.category = CategoriesService.Instance.GetCategoryID(model.CategoryID);
+            updateProduct.ImageURL = model.ImageURL;
+
+            productService.Instance.UpdateProduct(updateProduct);
             return RedirectToAction("ProductTable");
         }
 
         [HttpPost]
         public ActionResult Delete(int ID)
         {
-            productService.DeleteProduct(ID);
+            productService.Instance.DeleteProduct(ID);
             return RedirectToAction("ProductTable");
         }
     }
