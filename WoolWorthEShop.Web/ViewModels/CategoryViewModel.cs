@@ -10,6 +10,8 @@ namespace WoolWorthEShop.Web.ViewModels
     {
         public List<Category> categories { get; set; }
         public string SearchTerm { get; set; }
+
+        public Pager Pager { get; set; }
     }
 
     public class CategoryNewViewModel

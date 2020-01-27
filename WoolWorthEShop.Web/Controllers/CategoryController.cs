@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WoolWorthEShop.Entities;
 using WoolWorthEShop.Services;
+using WoolWorthEShop.Web.ViewModels;
 
 namespace WoolWorthEShop.Web.Controllers
 {
@@ -12,15 +13,20 @@ namespace WoolWorthEShop.Web.Controllers
     {
         //CategoriesService categoryService = new CategoriesService();
 
-        public ActionResult CategoryTable(string Search)
+        public ActionResult CategoryTable(string Search, int? pageno)
         {
+            CategorySearchViewModel model = new CategorySearchViewModel();
+
             var cate = CategoriesService.Instance.GetCategory();
+
             if (string.IsNullOrEmpty(Search) == false)
             {
-                cate = cate.Where(p => p.Name != null && p.Name.ToLower().Contains(Search.ToLower())).ToList();
+                model.SearchTerm = Search;
+                model.categories = model.categories.Where(p => p.Name != null && p.Name.ToLower().Contains(Search.ToLower())).ToList();
             }
 
-            return PartialView(cate);
+            model.Pager = new Pager(model.categories.Count, pageno);
+            return PartialView(model);
         }
 
 

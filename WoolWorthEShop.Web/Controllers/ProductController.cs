@@ -20,7 +20,7 @@ namespace WoolWorthEShop.Web.Controllers
         {
             return View();
         }
-
+        [ChildActionOnly]
         public ActionResult ProductTable(string Search, int? PageNo)
         {
             ProductSearchViewModel model = new ProductSearchViewModel();
